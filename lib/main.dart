@@ -76,16 +76,21 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: TextButton(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(children: [
+        const TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Enter your name',
           ),
-          onPressed: () { },
+        ),
+        const Spacer(flex: 4),
+        ElevatedButton(
+          onPressed: () {},
           child: const Text('Bắt đầu'),
         )
-      ),
+      ])),
     );
   }
 }
