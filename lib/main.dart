@@ -86,10 +86,15 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         const Spacer(flex: 4),
-        ElevatedButton(
-          onPressed: () {},
+        TextButton(
           child: const Text('Bắt đầu'),
-        )
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: const BorderSide(color: Colors.blue)))),
+          onPressed: () {},
+        ),
       ])),
     );
   }
