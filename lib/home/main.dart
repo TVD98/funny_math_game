@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:funny_math_game/game/game_screen.dart';
 
@@ -40,6 +42,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final myControllerUser = TextEditingController();
+  final myControllerPass = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myControllerUser.dispose();
+    myControllerPass.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,24 +62,76 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter your name',
-          ),
-        ),
-        TextButton(
-          child: const Text('Bắt đầu'),
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      side: const BorderSide(color: Colors.blue)))),
-          onPressed: () {
-            gotoGamePage();
-          },
-        ),
-      ])),
+            TextField(
+              controller: myControllerUser,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your name',
+              ),
+            ), TextField(
+              controller: myControllerPass,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your password',
+              ),
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+            ),
+            TextButton(
+              child: const Text('Bắt đầu'),
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          side: const BorderSide(color: Colors.blue)))),
+              onPressed: () {
+                bool emptyLogin = messAlert(myControllerUser.text, myControllerPass.text);
+                bool loginSuccess = checkLogin(myControllerUser.text, myControllerPass.text);
+                if( emptyLogin){
+                  if(loginSuccess) {
+                    gotoGamePage();
+                  } else {
+                    showAlert();
+                  }
+                }else{
+                  showAlert();
+                }
+
+
+
+              },
+            ),
+          ])),
+    );
+  }
+
+  bool messAlert(String username, String password ){
+    if(username=="" && password==""){
+      showDialog(
+        context: context,
+        builder: (context){
+          return const AlertDialog(
+            content: Text("Please enter your username and your password"),
+          );
+        },
+      );
+    }
+    return checkLogin(username, password);
+  }
+
+  bool checkLogin(String username, String password) {
+    return username == "midori" && password == "1234";
+  }
+
+  void showAlert() {
+    showDialog(
+        context: context,
+        builder: (context){
+          return const AlertDialog(
+            content: Text("Wrong! Please enter your account"),
+          );
+        },
     );
   }
 
